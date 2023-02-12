@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "729982233494",
+    "project_id": "tokiomarine-b8f56",
+    "storage_bucket": "tokiomarine-b8f56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729982233494:android:b077be2b59a2b3012f0bb7",
+        "android_client_info": {
+          "package_name": "com.example.tokiomarineapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729982233494-4fa7o5tvcj8l0cr8b34li8qftcr3fc7u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tokiomarineapp",
+            "certificate_hash": "18a9afa8a7cc809bb50ece9bda63ad37964504bc"
+          }
+        },
+        {
+          "client_id": "729982233494-t80nqfc00jc9qakd2e7ljhuvbkq3lbq2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT6jz-e4evOAIGvkVCrfVFaRvVQJ-F9kM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729982233494-1jr203hkbcm93m4ujujetju3k8a0gr8b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
