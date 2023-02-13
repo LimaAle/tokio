@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:tokiomarineapp/src/colors.dart';
+import 'package:tokiomarineapp/src/login/login_controller.dart';
 import 'package:tokiomarineapp/src/login/widgets/loginbackground.dart';
 import 'package:tokiomarineapp/src/login/widgets/loginbutton.dart';
 import 'package:tokiomarineapp/src/provider/google_signin.dart';
@@ -14,11 +16,12 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var maskFormatter = new MaskTextInputFormatter(
+    var maskFormatter = MaskTextInputFormatter(
         mask: '###.###.###-##',
         filter: {"#": RegExp(r'[0-9]')},
         type: MaskAutoCompletionType.lazy);
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    final LoginController controller = Get.put(LoginController());
     return Scaffold(
       body: BackgroundLogin(
         child: Column(
@@ -71,15 +74,28 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Row(
                           mainAxisSize: MainAxisSize.min,
-                          children: const [
-                            Text("Entrar",
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.only(
+                                bottom: 2, // Space between underline and text
+                              ),
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                      bottom: BorderSide(
+                                color: colorPrimary,
+                                width: 2.0, // Underline thickness
+                              ))),
+                              child: const Text(
+                                "Entrar",
                                 style: TextStyle(
                                     color: colorPrimary,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(
                               width: 16,
                             ),
-                            Text(
+                            const Text(
                               "Cadastrar",
                               style: TextStyle(
                                   color: Colors.white,
@@ -90,28 +106,39 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 24,
                         ),
-                        LoginTextfield(
-                          mask: maskFormatter,
-                          label: "CPF",
-                        ),
+                        Obx(() => LoginTextfield(
+                              controller: controller.cpfController.value,
+                              mask: maskFormatter,
+                              label: "CPF",
+                            )),
                         const SizedBox(
                           height: 12,
                         ),
-                        const LoginTextfield(
-                          obscure: true,
-                          label: "Senha",
-                        ),
+                        Obx(() => LoginTextfield(
+                              controller: controller.passwordController.value,
+                              obscure: true,
+                              label: "Senha",
+                            )),
                         const SizedBox(
-                          height: 24,
+                          height: 8,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: const [
-                            Text("Lembrar Sempre",
+                          children: [
+                            Obx(() => Checkbox(
+                                value: controller.isChecked.value,
+                                shape: const CircleBorder(),
+                                fillColor: MaterialStateProperty.resolveWith(
+                                    (Set<MaterialState> states) {
+                                  return colorPrimary;
+                                }),
+                                onChanged: (value) =>
+                                    controller.handleRememberMe(value!))),
+                            const Text("Lembrar Sempre",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold)),
-                            Text(
+                            const Text(
                               "Esqueceu a senha?",
                               style: TextStyle(
                                   color: colorPrimary,
@@ -125,7 +152,7 @@ class LoginScreen extends StatelessWidget {
                   Positioned(
                       bottom: -35,
                       child: LoginButton(
-                        onClick: () => {},
+                        onClick: () => controller.login(),
                       ))
                 ],
               ),
@@ -144,41 +171,30 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () {
-                        if (kIsWeb) return;
+                        if (GetPlatform.isWeb) return;
                         provider.signInWithGoogleWeb();
-                        print("test");
                       },
-                      icon: FaIcon(
+                      icon: const FaIcon(
                         FontAwesomeIcons.google,
                         color: Colors.white,
                         size: 32,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
-                    FaIcon(
+                    const FaIcon(
                       FontAwesomeIcons.facebookF,
                       color: Colors.white,
                       size: 32,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 40,
                     ),
-                    FaIcon(
+                    const FaIcon(
                       FontAwesomeIcons.twitter,
                       color: Colors.white,
                       size: 32,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        provider.googleLogout();
-                      },
-                      icon: FaIcon(
-                        FontAwesomeIcons.google,
-                        color: Colors.white,
-                        size: 32,
-                      ),
                     ),
                   ],
                 )

@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:tokiomarineapp/routes.dart';
 import 'package:tokiomarineapp/src/login/login.dart';
 import 'package:tokiomarineapp/src/provider/google_signin.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      //name: "tokioproject",
+      name: "tokioproject",
       options: const FirebaseOptions(
           apiKey: "AIzaSyCfthQtWfX-U0oZNHouL1cwXngUJrsHPrY",
           projectId: "tokiomarine-b8f56",
@@ -22,12 +24,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'App Tokio Marine',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LoginScreen(),
+        initialRoute: Routes.getLoginRoute(),
+        getPages: Routes.routes,
       ),
     );
   }

@@ -19,7 +19,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
     await FirebaseAuth.instance.signInWithCredential(credential);
-
+    user.displayName;
     notifyListeners();
   }
 
@@ -32,10 +32,13 @@ class GoogleSignInProvider extends ChangeNotifier {
 
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    return await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
+    await FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider());
+    notifyListeners();
   }
 
   googleLogout() async {
     await _googleSignIn.signOut();
+
+    notifyListeners();
   }
 }
